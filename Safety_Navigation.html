@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SafePath: Locus of Control Demo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col items-center p-4 md:p-6">
+  <div class="max-w-2xl w-full bg-white rounded-xl shadow-lg p-5 md:p-6">
+    <h1 class="text-xl md:text-2xl font-bold text-gray-800 mb-2">SafePath Navigation – Locus of Control Demo</h1>
+    <p class="text-gray-600 text-sm md:text-base mb-5">
+      CS412 Final Project | Contrasting Agent vs. User Control in Safety Navigation
+    </p>
+
+    <!-- Control Mode Selector -->
+    <div class="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+      <p class="font-semibold text-blue-800 mb-2">Select Adaptation Control Mode:</p>
+      <div class="flex flex-col sm:flex-row gap-3">
+        <label class="inline-flex items-center">
+          <input type="radio" name="mode" value="agent" class="mr-2 h-4 w-4" onclick="setMode('agent')">
+          <span class="text-gray-700 text-sm">Mode A: Agent Control (System Decides)</span>
+        </label>
+        <label class="inline-flex items-center">
+          <input type="radio" name="mode" value="user" class="mr-2 h-4 w-4" onclick="setMode('user')">
+          <span class="text-gray-700 text-sm">Mode B: User Control (You Decide)</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Scenario Context -->
+    <div class="mb-5 p-3 bg-amber-50 border-l-4 border-amber-500 rounded">
+      <p class="font-medium text-gray-800 text-sm">Simulated Scenario:</p>
+      <p class="text-gray-700 text-sm mt-1">
+        You're walking home at 10:30 PM. Real-time data shows a crowd gathering near Oak & 5th St—police classify it as "medium-risk."
+      </p>
+    </div>
+
+    <!-- Dynamic Output -->
+    <div id="output" class="min-h-36 p-4 border border-gray-200 rounded-lg bg-gray-50 flex items-center">
+      <p class="text-gray-500 italic text-sm">Select a control mode to see how SafePath responds.</p>
+    </div>
+  </div>
+
+  <footer class="mt-6 text-center text-xs text-gray-500">
+    SafePath CS412 Final Project | Demonstrates Prompt #1: Locus of Control (User vs. Agent)
+  </footer>
+
+  <script>
+    function setMode(mode) {
+      const out = document.getElementById('output');
+      if (mode === 'agent') {
+        out.innerHTML = `
+          <div class="text-left">
+            <div class="flex items-start mb-2">
+              <div class="w-2 h-2 bg-red-500 rounded-full mt-1.5 mr-2"></div>
+              <strong class="text-red-700">AUTOMATIC REROUTE INITIATED</strong>
+            </div>
+            <p class="text-sm text-gray-700 mb-2">
+              The system has rerouted you via Elm Street (adds 4 minutes).
+            </p>
+            <p class="text-xs text-gray-500">
+              <em>Reason: Medium-risk zone detected. No user confirmation requested.</em>
+            </p>
+          </div>
+        `;
+      } else {
+        out.innerHTML = `
+          <div class="text-left">
+            <div class="flex items-start mb-3">
+              <div class="w-2 h-2 bg-amber-500 rounded-full mt-1.5 mr-2"></div>
+              <strong class="text-amber-700">SAFETY ALERT</strong>
+            </div>
+            <p class="text-sm text-gray-700 mb-3">
+              Medium-risk activity ahead. Would you like to reroute via safer path?
+            </p>
+            <div class="flex gap-2">
+              <button onclick="reroute(true)" 
+                class="px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white text-sm rounded transition">
+                Yes, Reroute
+              </button>
+              <button onclick="reroute(false)" 
+                class="px-3 py-1.5 bg-gray-600 hover:bg-gray-700 text-white text-sm rounded transition">
+                No, Continue
+              </button>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    function reroute(accept) {
+      const out = document.getElementById('output');
+      if (accept) {
+        out.innerHTML = `
+          <div class="text-left">
+            <p class="font-semibold text-green-700 mb-1">Route Updated!</p>
+            <p class="text-sm text-gray-700">
+              You are now navigating via Elm Street—a well-lit, low-traffic alternative.
+            </p>
+            <p class="text-xs text-gray-500 mt-2">
+              Your choice reinforces your user profile preferences.
+            </p>
+          </div>
+        `;
+      } else {
+        out.innerHTML = `
+          <div class="text-left">
+            <p class="font-semibold text-gray-800 mb-1">Original Path Maintained</p>
+            <p class="text-sm text-gray-700">
+              Proceed with caution. SafePath will monitor the area and alert if risk escalates.
+            </p>
+            <p class="text-xs text-gray-500 mt-2">
+              Tip: Enable "Auto-reroute for High Risk" in settings if desired.
+            </p>
+          </div>
+        `;
+      }
+    }
+  </script>
+</body>
+</html>
